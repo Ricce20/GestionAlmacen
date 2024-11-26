@@ -1,25 +1,24 @@
 <?php
 
-namespace App\Filament\Resources\AsignacionResource\Pages;
+namespace App\Filament\Resources\TrasladoResource\Pages;
 
-use App\Filament\Resources\AsignacionResource;
+use App\Filament\Resources\TrasladoResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 use Filament\Resources\Components\Tab;
 use Illuminate\Database\Eloquent\Builder;
-class ListAsignacions extends ListRecords
+class ListTraslados extends ListRecords
 {
-    protected static string $resource = AsignacionResource::class;
+    protected static string $resource = TrasladoResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
-            ->hidden(fn():bool => in_array(auth()->user()->rol, ['Empleado', 'Director','Coordinador'])),
+            Actions\CreateAction::make(),
         ];
     }
-
+    
     public function getTabs(): array
     {
         return [
@@ -28,15 +27,18 @@ class ListAsignacions extends ListRecords
             //     ->modifyQueryUsing(fn (Builder $query) => $query->where('fecha_finalizacion', '!=', null)),
             // 'Sin Finalizar' => Tab::make()
             //     ->modifyQueryUsing(fn (Builder $query) => $query->where('fecha_finalizacion', null)),
-            'Inactivos' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('activo', false)),
-            'Activos' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('activo', true)),
+            'Pendientes' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('fecha_cierre', null)),
+                
+            'Rechazados' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('aceptado', false)),
+            'Aceptados' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('aceptado', true)),
         ];
     }
 
     public function getDefaultActiveTab(): string | int | null
     {
-        return 'Activos';
+        return 'Pendientes';
     }
 }

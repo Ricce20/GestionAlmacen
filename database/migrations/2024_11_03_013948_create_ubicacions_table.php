@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('ubicacions', function (Blueprint $table) {
             $table->id();
-            $table->string('piso')->nullable();
             $table->string('area');
-            $table->string('referencia')->nullable();
-            $table->boolean('activo');
+            $table->string('descripcion')->nullable();
             $table->timestamps();
         });
     }

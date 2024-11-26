@@ -12,6 +12,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Filters\SelectFilter;
+
+use App\Models\Clasificacion;
 
 class ProductResource extends Resource
 {
@@ -38,13 +41,24 @@ class ProductResource extends Resource
                     ->label('Status del activo/producto')
                     ->native(false)
                     ->searchable()
+                    ->optionsLimit(5)
                     ->preload()
                     ->required(),
                 Forms\Components\Select::make('category_id')
                     ->label('Categoria')
                     ->relationship('category','category')
+                    ->optionsLimit(5)
+                    ->native(false)
                     ->searchable()
                     ->preload()
+                    ->required(),
+                Forms\Components\Select::make('clasificacion_id')
+                    ->relationship('clasificacion','clave')
+                    ->native(false)
+                    ->searchable()
+                    ->preload()
+                    ->optionsLimit(10)
+                    ->label('Clasificacion')
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->label('Nombre')
@@ -67,22 +81,11 @@ class ProductResource extends Resource
                     ->label('Precio o valor del activo')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('valor_recidual')
-                    ->label('Valor recidual')
-                    ->numeric()
-                    ->required(),
                 Forms\Components\TextInput::make('vida_util')
                     ->label('Vida util del activo (años)')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('Utj_id')
-                    ->label('UTJ_ID')
-                    ->unique(ignoreRecord: true)
-                    ->required(),
-                Forms\Components\TextInput::make('key')
-                    ->label('Clave')
-                    ->unique(ignoreRecord: true)
-                    ->required(),
+                
             ]);
     }
 
@@ -109,22 +112,17 @@ class ProductResource extends Resource
                 //     ->searchable(),
                 Tables\Columns\TextColumn::make('price')
                     ->label('Valor')
-                    ->prefix('$')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('valor_recidual')
-                    ->label('Valor Reciadual')
-                    ->prefix('$')
-                    ->searchable(),
+                    ->prefix('$'),
                 Tables\Columns\TextColumn::make('vida_util')
                     ->label('Vida util')
                     ->suffix(' años')
                     ->numeric(),
-                Tables\Columns\TextColumn::make('Utj_id')
-                    ->label('UTJ_ID')
+                Tables\Columns\TextColumn::make('folio')
+                    ->label('Folio')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('key')
-                    ->label('Clave')
+                Tables\Columns\TextColumn::make('clasificacion.clave')
+                    ->label('Clasificacion')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status.status')
@@ -132,17 +130,22 @@ class ProductResource extends Resource
                     ->label('Status')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                
             ])
-            ->filters([
-                //
+            ->filters([ 
+                SelectFilter::make('clasificacion_id')
+                // ->preload()
+                ->relationship('clasificacion', 'clave')
+                ->label('Clasificacion')
+                //->searchable()
+                //->preload()
+                // ->options(Clasificacion::all()->pluck('clave', 'clave'))
+                    //->searchable()
+                
+               // ->optionsLimit(5)
+               // ->attribute('clasificacion_id')
+
+
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

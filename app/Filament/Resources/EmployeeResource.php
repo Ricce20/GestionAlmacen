@@ -40,6 +40,14 @@ class EmployeeResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Toggle::make('activo')
                     ->required(),
+                Forms\Components\Select::make('posicion')
+                    ->options([
+                        'Administrador' => 'Administrador',
+                        'Director' => 'Director',
+                        'Coordinador' => 'Coordinador',
+                        'Empleado'=>'Empleado'
+                    ])
+                    ->native(false)
             ]);
     }
 

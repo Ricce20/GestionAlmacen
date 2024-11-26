@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\UbicacionResource\Pages;
+namespace App\Filament\Resources\TrasladoResource\Pages;
 
-use App\Filament\Resources\UbicacionResource;
+use App\Filament\Resources\TrasladoResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 
-class ViewUbicacion extends ViewRecord
+class ViewTraslado extends ViewRecord
 {
-    protected static string $resource = UbicacionResource::class;
+    protected static string $resource = TrasladoResource::class;
 
     protected function getHeaderActions(): array
     {

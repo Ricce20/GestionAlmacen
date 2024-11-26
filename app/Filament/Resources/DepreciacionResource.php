@@ -25,6 +25,11 @@ class DepreciacionResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Registros Depreciaciones(prodcutos)';
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form

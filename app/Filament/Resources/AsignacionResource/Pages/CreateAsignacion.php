@@ -12,6 +12,13 @@ class CreateAsignacion extends CreateRecord
 {
     protected static string $resource = AsignacionResource::class;
 
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['activo'] = true;
+    
+        return $data;
+    }
+
     protected function beforeCreate(): void
     {
         $data = $this->form->getState();

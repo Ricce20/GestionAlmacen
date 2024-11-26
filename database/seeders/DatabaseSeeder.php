@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
         $this->call(AcquisitionType::class);
         $this->call(CategoriesSeeders::class);
         $this->call(SuppliersSeeders::class);
+        $this->call(ubicaciones::class);
+        $this->call(Clasificacion::class);
+        $this->call(User::class);
 
         //\App\Models\Product::factory(10)->create();
 

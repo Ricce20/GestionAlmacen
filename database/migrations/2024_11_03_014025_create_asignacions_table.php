@@ -20,6 +20,8 @@ return new class extends Migration
             $table->date('fecha_finalizacion')->nullable();
             $table->boolean('devuelto')->nullable();
             $table->string('nota')->nullable();
+            $table->boolean('activo');
+            $table->enum('tipo_asignacion',['Transferido','Asignado']);
             $table->timestamps();
 
             $table->foreign('employee_id')->references('id')->on('employees')->onUpdate('cascade')->onDelete('restrict');

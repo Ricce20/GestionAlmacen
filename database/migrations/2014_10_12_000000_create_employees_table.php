@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('segundo_apellido');
             $table->string('puesto');
             $table->boolean('activo');
+            $table->enum('posicion', ['Administrador ', 'Director','Coordinador','Empleado'])->nullable();
             $table->timestamps();
         });
     }

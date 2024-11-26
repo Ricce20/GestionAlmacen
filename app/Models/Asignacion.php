@@ -18,8 +18,11 @@ class Asignacion extends Model
         'product_id',
         'fecha_finalizacion',
         'devuelto',
-        'nota'
+        'nota',
+        'activo',
+        'tipo_asignacion'
     ];
+    protected $guarded = ['id'];
 
     public function product():BelongsTo{
         return $this->belongsTo(Product::class);

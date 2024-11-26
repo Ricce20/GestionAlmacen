@@ -23,15 +23,11 @@ class UbicacionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('piso')
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('area')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('referencia')
+                Forms\Components\TextInput::make('descripcion')
                     ->maxLength(255),
-                Forms\Components\Toggle::make('activo')
-                    ->required(),
             ]);
     }
 
@@ -39,33 +35,21 @@ class UbicacionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('piso')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('area')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('referencia')
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('activo')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('descripcion')
+                //     ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

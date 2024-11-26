@@ -29,7 +29,7 @@ class GestionPanelProvider extends PanelProvider
             ->id('gestion')
             ->path('gestion')
             ->login()
-            ->passwordReset()
+            // ->passwordReset()
             ->profile()
             ->colors([
                 'primary' => Color::Amber,

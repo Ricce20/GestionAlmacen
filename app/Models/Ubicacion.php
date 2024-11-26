@@ -11,10 +11,8 @@ class Ubicacion extends Model
     use HasFactory;
 
     protected $fillable = [
-        'piso',
         'area',
-        'referencia',
-        'activo'
+        'descripcion',
     ];
 
     public function asignacion():HasMany{

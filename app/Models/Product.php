@@ -19,14 +19,35 @@ class Product extends Model
         'model',
         'serial_number',
         'price',
-        'valor_recidual',
         'vida_util',
-        'Utj_id',
-        'key',
-        'acquisition_type_id',
+        'folio',
+        'clasificacion_id',
         'status_id',
         'category_id'
     ];
+
+    public static function generarFolioUnico($clasificacion): string
+    {
+        // Obtener el último folio registrado en la base de datos
+        $ultimoFolio = self::select('folio','clasificacion_id')->where('clasificacion_id', $clasificacion)->latest('folio')->first();
+       // dd($ultimoFolio);
+        // Si no existe un folio previo, iniciar desde 00001
+        if (!$ultimoFolio) {
+           
+            $nuevoFolioNumero = 1;
+        } else {
+            // Extraer el número del folio, eliminar "FOLIO-" y convertir a entero
+            $ultimoFolioNumero = intval(substr($ultimoFolio->folio, 5));
+            $nuevoFolioNumero = bcadd($ultimoFolioNumero,'1');
+           // dd($nuevoFolioNumero );
+        }
+        $clasificacion = Clasificacion::where('id',$clasificacion)->select('clave')->first();
+       // dd($clasificacion);
+        // Crear el nuevo folio con el formato FOLIO-00000
+        $nuevoFolio = $clasificacion->clave. '-' . str_pad($nuevoFolioNumero, 5, '0', STR_PAD_LEFT);
+       // dd($nuevoFolio);
+        return $nuevoFolio;
+    }
 
     // public function acquisition_type():BelongsTo{
     //     return $this->belongsTo(AcquisitionType::class);
@@ -55,6 +76,10 @@ class Product extends Model
 
     public function objeto_gasto():HasMany{
         return $this->hasMany(ObjetoGasto::class);
+    }
+
+    public function clasificacion():BelongsTo{
+        return $this->belongsTo(Clasificacion::class);
     }
 
 }

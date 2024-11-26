@@ -19,10 +19,9 @@ return new class extends Migration
             $table->string('model')->nullable(); //modelo
             $table->string('serial_number')->nullable();//numero de serie
             $table->decimal('price');
-            $table->decimal('valor_recidual')->nullable();
             $table->integer('vida_util');
-            $table->string('Utj_id'); //UTJid
-            $table->string('key');//clave
+            $table->string('folio');//clave
+            $table->unsignedBigInteger('clasificacion_id');//clave
             // $table->unsignedBigInteger('acquisition_type_id');//tipo de alta
             $table->unsignedBigInteger('status_id');//status del producto
             $table->unsignedBigInteger('category_id');//status del producto
@@ -30,6 +29,7 @@ return new class extends Migration
 
             //clave foranea
             // $table->foreign('acquisition_type_id')->references('id')->on('acquisition_types')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreign('clasificacion_id')->references('id')->on('clasificacions')->onUpdate('cascade')->onDelete('restrict');
             $table->foreign('status_id')->references('id')->on('statuses')->onUpdate('cascade')->onDelete('restrict');
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('restrict');
 

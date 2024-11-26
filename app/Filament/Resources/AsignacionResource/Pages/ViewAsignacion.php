@@ -13,7 +13,8 @@ class ViewAsignacion extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
+            // Actions\EditAction::make()
+            // ->hidden(fn():bool => auth()->user()->rol === 'Empleado'),
         ];
     }
 }
