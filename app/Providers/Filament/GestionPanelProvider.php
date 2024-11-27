@@ -27,12 +27,17 @@ class GestionPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('gestion')
-            ->path('gestion')
+            ->path('/')
             ->login()
             // ->passwordReset()
             ->profile()
             ->colors([
-                'primary' => Color::Amber,
+                'danger' => Color::Rose,
+                'gray' => Color::Gray,
+                'info' => Color::Blue,
+                'primary' => Color::Indigo,
+                'success' => Color::Emerald,
+                'warning' => Color::Orange,
             ])
             ->brandName('PLAI')
             ->brandLogo(asset('PLAI.png'))
@@ -46,7 +51,7 @@ class GestionPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -65,7 +70,9 @@ class GestionPanelProvider extends PanelProvider
             ->navigationGroups([
                 NavigationGroup::make('Gestion_Activos')
                      ->label('Activos')
-                     ->icon('heroicon-o-shopping-cart'),
+                     ->icon('heroicon-o-shopping-cart')
+                     
+                     ,
                 NavigationGroup::make('settigns')
                      ->label('Configuracion')
                      ->icon('heroicon-o-shopping-cart'),

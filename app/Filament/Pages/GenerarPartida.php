@@ -32,6 +32,13 @@ class GenerarPartida extends Page implements HasForms
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.generar-partida';
+
+    public static function canAccess(): bool
+    {
+        $user = auth()->user();
+        return $user->rol == 'Administrador' ?  true : false;
+    }
+
     public function mount(): void
     {
         $this->form->fill();

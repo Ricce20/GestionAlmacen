@@ -15,16 +15,36 @@ class AcquisitionType extends Seeder
     {
         DB::table('acquisition_types')->insert([
             [
-                'type' => 'Compra'
+                'type' => 'Compra',
+                'es_tipo_venta' => false,
+                'es_tipo_donativo' => false,
+                'es_tipo_comodato' => false,
+                'es_tipo_baja' => false,
+                'es_tipo_compra' => true
             ],
             [
-                'type' => 'Comodato'
+                'type' => 'Comodato',
+                'es_tipo_venta' => false,
+                'es_tipo_donativo' => false,
+                'es_tipo_comodato' => true,
+                'es_tipo_baja' => false,
+                'es_tipo_compra' => false
             ],
             [
-                'type' => 'Donacion'
+                'type' => 'Donacion',
+                'es_tipo_venta' => false,
+                'es_tipo_donativo' => true,
+                'es_tipo_comodato' => false,
+                'es_tipo_baja' => false,
+                'es_tipo_compra' => false
             ],
             [
-                'type' => 'Baja Activo'
+                'type' => 'Baja Activo',
+                'es_tipo_venta' => false,
+                'es_tipo_donativo' => false,
+                'es_tipo_comodato' => false,
+                'es_tipo_baja' => true,
+                'es_tipo_compra' => false
             ]
         ]);
     }

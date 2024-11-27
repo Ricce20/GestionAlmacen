@@ -120,55 +120,48 @@ class TrasladoResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\Action::make('confirmar')
-                ->requiresConfirmation()
-                ->action(function($record){
-                    //actualizar
-                    $asignacionRegistro = Asignacion::find($record->asignacion_id);
-                    DB::transaction(function () use ($record,$asignacionRegistro) {
-                        $record->update([
-                            'fecha_cierre' => now()->timezone('America/Mexico_City')->format('Y/m/d'),
-                            'motivo_destinatario' => 'Aceptado correctamente',
-                            'aceptado' => true,
-                        ]);
+                    ->requiresConfirmation()
+                    ->action(function($record){
+                        //actualizar
+                        $asignacionRegistro = Asignacion::find($record->asignacion_id);
+                        DB::transaction(function () use ($record,$asignacionRegistro) {
+                            $record->update([
+                                'fecha_cierre' => now()->timezone('America/Mexico_City')->format('Y/m/d'),
+                                'motivo_destinatario' => 'Aceptado correctamente',
+                                'aceptado' => true,
+                            ]);
 
-                        $asignacionRegistro->update([
-                            'fecha_finalizacion' => now()->timezone('America/Mexico_City')->format('Y/m/d'),
-                            'devuelto' => true,
-                            'nota' => 'El activo a sido trasladado'
-                        ]);
+                            $asignacionRegistro->update([
+                                'fecha_finalizacion' => now()->timezone('America/Mexico_City')->format('Y/m/d'),
+                                'devuelto' => true,
+                                'nota' => 'El activo a sido trasladado'
+                            ]);
 
-                        Asignacion::create([
-                            'fecha_asignacion' =>now()->timezone('America/Mexico_City')->format('Y/m/d'),
-                            'employee_id' => $record->destinatario_employee_id,
-                            'ubicacion_id' => $record->nueva_ubicacion,
-                            'product_id' => $asignacionRegistro->product_id,
-                            'activo' => true,
-                            'tipo_asignacion' => 'Transferido'
-                        ]);
-                    });
+                            Asignacion::create([
+                                'fecha_asignacion' =>now()->timezone('America/Mexico_City')->format('Y/m/d'),
+                                'employee_id' => $record->destinatario_employee_id,
+                                'ubicacion_id' => $record->nueva_ubicacion,
+                                'product_id' => $asignacionRegistro->product_id,
+                                'activo' => true,
+                                'tipo_asignacion' => 'Transferido'
+                            ]);
+                        });
 
-                     // Enviar notificación
-                     Notification::make()
-                     ->title('Se genero un nuevo registro de asignacion por traslado')
-                     ->success()
-                     ->send();
-                })
-                ->hidden(fn(): bool => in_array(auth()->user()->rol, ['Empleado','Administrador']))
-                ->visible(function (Model $record):bool {
-                    // if( is_null($record->activo) && $record->destinatario_employee_id === auth()->user()->employee_id){
-                    //     return true;
-                    // }
-                    // if($record->aceptado || !$record->aceptado){
-                    //     //dd($record);
-                    //     return false;
-                    // }
-                    if($record->aceptado === null && $record->destinatario_employee_id === auth()->user()->employee_id) {
-                       // dd($record);
-                        return true;
-                    }else{
-                        return false;
-                    }
-                
+                        // Enviar notificación
+                        Notification::make()
+                        ->title('Se genero un nuevo registro de asignacion por traslado')
+                        ->success()
+                        ->send();
+                    })
+                    ->hidden(fn(Model $record): bool => in_array(auth()->user()->rol, ['Empleado','Administrador']) && $record->destinatario_employee_id !== auth()->user()->employee_id)
+                    ->visible(function (Model $record):bool {
+                        if($record->aceptado === null) {
+
+                            return true;
+                        }else{
+
+                            return false;
+                        }
                 }),
             Tables\Actions\Action::make('Rechazar')
                 ->requiresConfirmation()
@@ -197,12 +190,15 @@ class TrasladoResource extends Resource
                      ->success()
                      ->send();
                 })
-                ->hidden(fn(): bool => in_array(auth()->user()->rol, ['Empleado','Administrador']))
+                ->hidden(fn(Model $record): bool => in_array(auth()->user()->rol, ['Empleado','Administrador'])  && $record->destinatario_employee_id !== auth()->user()->employee_id)
                 ->visible(function (Model $record):bool {
                     // if( is_null($record->activo) && $record->destinatario_employee_id === auth()->user()->employee_id){
                     //     return true;
                     // }
-                    if($record->aceptado === null && $record->destinatario_employee_id === auth()->user()->employee_id) {
+                    // return true;
+                    // dd($record->aceptado,$record->destinatario_employee_id === auth()->user()->employee_id);
+
+                    if($record->aceptado === null) {
                         // dd($record);
                          return true;
                      }else{
